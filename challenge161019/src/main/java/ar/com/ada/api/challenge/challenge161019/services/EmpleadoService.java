@@ -63,4 +63,24 @@ public class EmpleadoService {
         return c.getEmpleados();
     
     }
+
+    public void actualizarEmpleado (int empleadoId, String nombre, int edad, int categoriaId)
+    {
+        Empleado e = buscarPorId(empleadoId);
+        e.setNombre(nombre);
+        e.setEdad(edad);
+        Categoria c = categoriaService.buscarPorId(categoriaId);
+        e.setCategoria(c);
+        c.agregarEmpleado(e);
+        
+        repoEmpleado.save(e);
+    }
+
+    public void actualizarSueldo(int empleadoId, BigDecimal sueldo)
+    {
+        Empleado e = buscarPorId(empleadoId);
+        e.setSueldo(sueldo);
+
+        repoEmpleado.save(e);
+    }
 }
