@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ada.api.challenge.challenge161019.entities.Categoria;
 import ar.com.ada.api.challenge.challenge161019.entities.Empleado;
 import ar.com.ada.api.challenge.challenge161019.repositories.EmpleadoRepository;
 
@@ -19,6 +20,8 @@ public class EmpleadoService {
 
     @Autowired
     EmpleadoRepository repoEmpleado;
+    @Autowired
+    CategoriaService categoriaService;
 
     public Empleado save(Empleado e) {
         return repoEmpleado.save(e);
@@ -33,7 +36,8 @@ public class EmpleadoService {
         e.setSueldo(sueldo);
         e.setFechaAlta(new Date());
         e.setEstado("activo");
-        e.getCategoria().agregarEmpleado(e);
+        Categoria c = categoriaService.buscarPorId(categoriaId);
+        e.setCategoria(c);
         
         repoEmpleado.save(e);
     }
