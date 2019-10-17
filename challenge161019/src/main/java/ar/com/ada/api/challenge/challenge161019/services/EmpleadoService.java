@@ -38,6 +38,7 @@ public class EmpleadoService {
         e.setEstado("activo");
         Categoria c = categoriaService.buscarPorId(categoriaId);
         e.setCategoria(c);
+        c.agregarEmpleado(e);
         
         repoEmpleado.save(e);
     }
@@ -54,5 +55,12 @@ public class EmpleadoService {
         if (e.isPresent())
             return e.get();
         return null;
+    }
+
+    public List<Empleado> getEmpleadosPorCategoriaId(int id){
+
+        Categoria c = categoriaService.buscarPorId(id);
+        return c.getEmpleados();
+    
     }
 }

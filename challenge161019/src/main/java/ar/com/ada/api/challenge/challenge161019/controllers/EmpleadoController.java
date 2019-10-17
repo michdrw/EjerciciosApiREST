@@ -3,18 +3,18 @@ package ar.com.ada.api.challenge.challenge161019.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
 import ar.com.ada.api.challenge.challenge161019.entities.Empleado;
 import ar.com.ada.api.challenge.challenge161019.models.requests.EmployeeCreationRequest;
 import ar.com.ada.api.challenge.challenge161019.models.responses.EmployeeCreationResponse;
+import ar.com.ada.api.challenge.challenge161019.services.CategoriaService;
 import ar.com.ada.api.challenge.challenge161019.services.EmpleadoService;
 
 /**
@@ -25,6 +25,8 @@ public class EmpleadoController {
 
     @Autowired
     EmpleadoService empleadoService;
+    @Autowired
+    CategoriaService categoriaService;
 
     @PostMapping("/empleados")
     public EmployeeCreationResponse postCreateEmployee (@RequestBody EmployeeCreationRequest req){
@@ -54,4 +56,16 @@ public class EmpleadoController {
         }
         return ResponseEntity.ok(e);
     }
+
+    // Obtener la lista de empleados de una categoria desde su id
+    @GetMapping("/empleados/categorias/{id}")
+    public ResponseEntity<List<Empleado>> getEmpleadosPorCategoriaId(@PathVariable int id){
+            
+        List<Empleado> le = empleadoService.getEmpleadosPorCategoriaId(id);
+        if (le == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(le);
+    }
+    
 }
