@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.challenge.challenge161019.entities.Empleado;
 import ar.com.ada.api.challenge.challenge161019.models.requests.EmployeeCreationRequest;
+import ar.com.ada.api.challenge.challenge161019.models.requests.IdRequest;
 import ar.com.ada.api.challenge.challenge161019.models.requests.NoSueldoRequest;
 import ar.com.ada.api.challenge.challenge161019.models.requests.SueldoRequest;
 import ar.com.ada.api.challenge.challenge161019.models.responses.EmployeeCreationResponse;
@@ -100,7 +101,17 @@ public class EmpleadoController {
         return ecr;
     }
 
-    
+    @DeleteMapping("/empleados/{id}")
+    public EmployeeCreationResponse deleteEmployee(@PathVariable int id, @RequestBody IdRequest req)
+    {
+        EmployeeCreationResponse ecr = new EmployeeCreationResponse();
+        empleadoService.bajaEmpleado(req.empleadoId);
+
+        ecr.isOk = true;
+        ecr.message = "Siempre desempleado nunca empleado";
+        return ecr;
+
+    }
 
     
 }

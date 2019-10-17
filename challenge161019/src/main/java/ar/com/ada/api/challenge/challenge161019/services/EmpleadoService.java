@@ -83,4 +83,13 @@ public class EmpleadoService {
 
         repoEmpleado.save(e);
     }
+
+    public void bajaEmpleado(int empleadoId)
+    {
+        Empleado e = buscarPorId(empleadoId);
+        e.setEstado("baja");
+        e.setFechaBaja(new Date());
+        
+        repoEmpleado.save(e);
+    }
 }
