@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.challenge.nasachallenge.entities.Pais;
 import ar.com.ada.challenge.nasachallenge.entities.Temperatura;
-import ar.com.ada.challenge.nasachallenge.models.requests.IdRequest;
 import ar.com.ada.challenge.nasachallenge.models.requests.TemperaturaCreationRequest;
 import ar.com.ada.challenge.nasachallenge.models.responses.TemperaturaDeleteResponse;
 import ar.com.ada.challenge.nasachallenge.models.responses.TemperaturaResponse;
@@ -46,6 +45,7 @@ public class TemperaturaController {
         
     }
 
+
     @DeleteMapping("/temperaturas/{id}")
     public TemperaturaDeleteResponse deleteTemperatura(@PathVariable int id)
     {
@@ -55,7 +55,6 @@ public class TemperaturaController {
         tdr.isOk = true;
         tdr.message = "Temperature'deleted'";
         return tdr;
-
     }
 
     @GetMapping("/temperaturas/anios/{anio}")

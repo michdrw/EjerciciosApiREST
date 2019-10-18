@@ -63,9 +63,9 @@ public class TemperaturaService {
 
     
 
-    public void bajaTemperatura(int temperaturaId)
+    public void bajaTemperatura(int id)
     {
-        Temperatura t = buscarPorId(temperaturaId);
+        Temperatura t = buscarPorId(id);
         t.setAnio(0);
 
         repoTemp.save(t);
