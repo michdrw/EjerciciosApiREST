@@ -52,8 +52,8 @@ public class BilleteraService {
 
    
 
-    public void crearDeposito(Double importe, Integer billeteraId){
-        Billetera b = repoBilletera.findById(billeteraId).get();
+    public void crearDeposito(Double importe, Integer id){
+        Billetera b = repoBilletera.findById(id).get();
         b.movimientoDeposito(importe, b.getPersona().getUsuario());
 
         repoBilletera.save(b);

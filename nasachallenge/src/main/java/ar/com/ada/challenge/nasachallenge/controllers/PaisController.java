@@ -54,7 +54,7 @@ public class PaisController {
         return ResponseEntity.ok(p);
     }
 
-    @PutMapping("/paises/{id}")
+    @PutMapping("/paises/{id}") 
     public PaisResponse postCreatePais(@PathVariable int id, @RequestBody PaisUpdateRequest req)
     {
         PaisResponse pr = new PaisResponse();

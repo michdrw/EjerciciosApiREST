@@ -6,5 +6,4 @@ package ar.com.ada.api.billeteravirtual.models.requests;
 public class DepositoRequest {
 
     public Double importe;
-    public Integer billeteraId;
 }

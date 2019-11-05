@@ -19,7 +19,7 @@ public class BilleteraController {
     @Autowired
     BilleteraService billeteraService;
 
-    @PostMapping("transferencia")
+    @PostMapping("/transferencias")
     public TransferResponse postTransfer(@RequestBody TransferRequest req){
 
         TransferResponse t = new TransferResponse();
@@ -31,11 +31,11 @@ public class BilleteraController {
         return t;
 }
 
-    @PostMapping("deposito")
-    public DepositoResponse postDeposito (@RequestBody DepositoRequest req){
+    @PostMapping("/billeteras/{id}/depositos")
+    public DepositoResponse postDeposito (@PathVariable int id, @RequestBody DepositoRequest req){
 
         DepositoResponse d = new DepositoResponse();
-        billeteraService.crearDeposito(req.importe, req.billeteraId);
+        billeteraService.crearDeposito(req.importe, id);
 
         d.isOk = true;
         d.message = "Deposito exitoso";

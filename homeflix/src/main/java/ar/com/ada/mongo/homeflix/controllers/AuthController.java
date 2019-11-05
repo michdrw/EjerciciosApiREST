@@ -1,17 +1,21 @@
-package ar.com.ada.api.billeteravirtual.controllers;
+package ar.com.ada.mongo.homeflix.controllers;
 
+
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import ar.com.ada.api.billeteravirtual.models.requests.LoginRequest;
-import ar.com.ada.api.billeteravirtual.models.requests.RegistrationRequest;
-import ar.com.ada.api.billeteravirtual.models.responses.JwtResponse;
-import ar.com.ada.api.billeteravirtual.models.responses.RegistrationResponse;
-import ar.com.ada.api.billeteravirtual.security.jwt.JWTTokenUtil;
-import ar.com.ada.api.billeteravirtual.services.JWTUserDetailsService;
-import ar.com.ada.api.billeteravirtual.services.UsuarioService;
+import ar.com.ada.mongo.homeflix.models.requests.LoginRequest;
+import ar.com.ada.mongo.homeflix.models.requests.RegistrationRequest;
+import ar.com.ada.mongo.homeflix.models.responses.JwtResponse;
+import ar.com.ada.mongo.homeflix.models.responses.RegistrationResponse;
+import ar.com.ada.mongo.homeflix.security.jwt.JWTTokenUtil;
+import ar.com.ada.mongo.homeflix.services.JWTUserDetailsService;
+import ar.com.ada.mongo.homeflix.services.UsuarioService;
 
 /**
  * AuthController
@@ -24,24 +28,21 @@ public class AuthController {
 
     @Autowired
     private JWTTokenUtil jwtTokenUtil;
-    
+
     @Autowired
     private JWTUserDetailsService userDetailsService;
 
     @PostMapping("auth/register")
-    public RegistrationResponse postRegisterUser(@RequestBody RegistrationRequest req) {
-
-
+    public RegistrationResponse postRegisterUser(@RequestBody RegistrationRequest req)  {
         RegistrationResponse r = new RegistrationResponse();
-        int usuarioCreadoId = usuarioService.crearUsuario(req.nombre, req.dni, req.edad, req.email, req.password);
-        
+
+        ObjectId uId = usuarioService.crearUsuario(req.fullname, req.email, req.password);
 
         r.isOk = true;
         r.message = "Te registraste con exito";
-        r.usuarioId = usuarioCreadoId; 
-
+        r.userId = uId;
         return r;
-        
+
     }
 
     @PostMapping("auth/login")
@@ -58,4 +59,5 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
 
     }
+
 }
