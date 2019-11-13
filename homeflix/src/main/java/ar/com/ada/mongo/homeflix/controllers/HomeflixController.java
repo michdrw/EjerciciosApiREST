@@ -70,13 +70,13 @@ public class HomeflixController {
         
     }
 
-    @PostMapping("/episodios")
-    public BasicResponse postTemporada(@PathVariable String hexadecimal, int nroTemporada, @RequestBody Episodio reqEpisodio)
+    @PostMapping("/series/{id}/temporada/{nroTemporada}/episodios")
+    public BasicResponse postTemporada(@PathVariable String id, int nroTemporada, @RequestBody Episodio reqEpisodio)
     {
         
-        ObjectId id = new ObjectId(hexadecimal);
+        ObjectId oId = new ObjectId(id); //hexadecimal
         BasicResponse b = new BasicResponse();
-        serieService.buscarPorId(id).getTemporada(nroTemporada).agregarEpisodio(reqEpisodio);
+        serieService.buscarPorId(oId).getTemporada(nroTemporada).agregarEpisodio(reqEpisodio);
 
         b.isOk = true;
         b.message = "Episodio cargado con exito";

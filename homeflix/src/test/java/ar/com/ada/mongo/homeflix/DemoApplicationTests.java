@@ -74,7 +74,7 @@ class DemoApplicationTests {
 	PeliculaService peliculaService = new PeliculaService();
 
 	@Test
-	void verificarPelicula()
+	void verificarPeliculaDuplicada()
 	{
 		
 		Pelicula p = new Pelicula();
@@ -86,7 +86,20 @@ class DemoApplicationTests {
 		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
 
 		assertEquals(PeliculaValidationType.PELICULA_DUPLICADA, validationType);
+	}
 
+	@Test
+	void verificarPeliculaNoDuplicada()
+	{
+		Pelicula p = new Pelicula();
+		p.setNombre("Corpse Bride");
+		p.setAnio(2005);
+		p.setGenero("Musical");
+		p.setGanoOscar(false);
+
+		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
+
+		assertEquals(PeliculaValidationType.PELICULA_OK, validationType);
 	}
 
 	@Test
