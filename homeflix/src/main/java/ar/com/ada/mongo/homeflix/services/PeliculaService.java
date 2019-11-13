@@ -18,8 +18,7 @@ public class PeliculaService {
     @Autowired
     PeliculaRepository repoPelicula;
 
-    public void guardar(Pelicula pelicula)
-    {
+    public void guardar(Pelicula pelicula) {
         repoPelicula.save(pelicula);
     }
 
@@ -35,4 +34,33 @@ public class PeliculaService {
         return repoPelicula.findAll();
     }
 
+    public enum PeliculaValidationType {
+        PELICULA_OK, 
+        PELICULA_DUPLICADA,
+        PELICULA_DATOS_INVALIDOS
+    }
+
+    public PeliculaValidationType verificarPelicula(Pelicula pelicula) {
+        if (pelicula.getNombre() == null) {
+            return PeliculaValidationType.PELICULA_DATOS_INVALIDOS;
+        }
+        if (pelicula.getAnio() <= 0) {
+            return PeliculaValidationType.PELICULA_DATOS_INVALIDOS;
+        }
+
+        Pelicula p = this.buscarPorNombre(pelicula.getNombre());
+        if (p != null) {
+            if (pelicula.get_id() != null) {
+                if ((pelicula.get_id().toString()).equals(p.get_id().toString())) {
+                    return PeliculaValidationType.PELICULA_OK;
+                } else {
+                    return PeliculaValidationType.PELICULA_DUPLICADA;
+                }
+            } 
+            else
+            return PeliculaValidationType.PELICULA_DUPLICADA;
+        }
+
+        return PeliculaValidationType.PELICULA_OK;
+    }
 }

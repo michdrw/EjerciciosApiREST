@@ -54,12 +54,15 @@ public class HomeflixController {
         
     }
 
-    @PostMapping("/temporadas")
-    public BasicResponse postTemporada(@PathVariable String hexadecimal, @RequestBody Temporada reqTemporada)
+    @PostMapping("/series/{id}/temporadas")
+    public BasicResponse postTemporada(@PathVariable String id, @RequestBody Temporada reqTemporada)
     {
-        ObjectId id = new ObjectId(hexadecimal);
+        ObjectId oId = new ObjectId(id);
         BasicResponse b = new BasicResponse();
-        serieService.buscarPorId(id).agregarTemporada(reqTemporada);
+        Serie s = serieService.buscarPorId(oId);
+        s.agregarTemporada(reqTemporada);
+        serieService.guardar(s);
+
 
         b.isOk = true;
         b.message = "Temporada cargada con exito";
