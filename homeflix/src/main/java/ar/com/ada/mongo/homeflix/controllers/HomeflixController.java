@@ -1,7 +1,12 @@
 package ar.com.ada.mongo.homeflix.controllers;
 
+import java.security.Principal;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +20,7 @@ import ar.com.ada.mongo.homeflix.models.responses.BasicResponse;
 import ar.com.ada.mongo.homeflix.services.HomeflixService;
 import ar.com.ada.mongo.homeflix.services.PeliculaService;
 import ar.com.ada.mongo.homeflix.services.SerieService;
+import ar.com.ada.mongo.homeflix.services.UsuarioService;
 
 /**
  * HomeflixController
@@ -40,6 +46,16 @@ public class HomeflixController {
         b.isOk = true;
         b.message = "Pelicula cargada con exito";
         return b;
+    }
+
+    @GetMapping("/peliculas")
+    public ResponseEntity<?> GetPeliculas(Principal principal) {
+
+        List<Pelicula> peliculas = peliculaService.getCatalogo();
+        if (peliculas.size() == 0)
+        return (ResponseEntity<?>) ResponseEntity.notFound();
+
+        return ResponseEntity.ok(peliculas);
     }
 
     @PostMapping("/series")
@@ -84,5 +100,14 @@ public class HomeflixController {
         
     }
 
+    @GetMapping("/series")
+    public ResponseEntity<?> GetSeries(Principal principal) {
+
+        List<Serie> series = serieService.getCatalogo();
+        if (series.size() == 0)
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+
+        return ResponseEntity.ok(series);
+    }
 
 }

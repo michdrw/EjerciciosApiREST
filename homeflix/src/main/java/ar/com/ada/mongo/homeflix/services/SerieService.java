@@ -41,6 +41,7 @@ public class SerieService {
     public enum SerieValidationType 
     {
         SERIE_OK,
+        SERIE_DUPLICADA,
         TEMPORADAS_NULA, 
         TEMPORADAS_VACIA, 
         TEMPORADA_DUPLICADA, 
@@ -72,6 +73,19 @@ public class SerieService {
                     return SerieValidationType.TEMPORADA_INVALIDA;
 
                       unicasTemps.put(new Integer(t.getNroTemporada()), t);
+                }
+
+                Serie s = this.buscarPorNombre(serie.getNombre());
+                if (s != null) {
+                    if (serie.get_id() != null) {
+                        if ((serie.get_id().toString()).equals(s.get_id().toString())) {
+                            return SerieValidationType.SERIE_OK;
+                        } else {
+                            return SerieValidationType.SERIE_DUPLICADA;
+                        }
+                    } 
+                    else
+                    return SerieValidationType.SERIE_DUPLICADA;
                 }
 
                 return SerieValidationType.SERIE_OK;

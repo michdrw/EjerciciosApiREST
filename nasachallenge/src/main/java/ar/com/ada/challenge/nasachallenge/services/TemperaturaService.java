@@ -61,8 +61,6 @@ public class TemperaturaService {
         return null;
     }
 
-    
-
     public void bajaTemperatura(int id)
     {
         Temperatura t = buscarPorId(id);
@@ -71,4 +69,24 @@ public class TemperaturaService {
         repoTemp.save(t);
     }
 
+    public enum TemperaturaValidationType 
+    {
+        TEMPERATURA_OK, 
+        TEMPERATURA_DATOS_INVALIDOS,
+        PAIS_VACIO
+    }
+
+    public TemperaturaValidationType verificarTemperatura (Temperatura temperatura)
+    {
+        if (temperatura.getAnio() == 0) {
+            return TemperaturaValidationType.TEMPERATURA_DATOS_INVALIDOS;
+        }
+        if (temperatura.getGrado() == null) {
+            return TemperaturaValidationType.TEMPERATURA_DATOS_INVALIDOS;
+        }
+        if (temperatura.getPais() == null)
+        {
+            return TemperaturaValidationType.PAIS_VACIO;
+        }
+    }
 }

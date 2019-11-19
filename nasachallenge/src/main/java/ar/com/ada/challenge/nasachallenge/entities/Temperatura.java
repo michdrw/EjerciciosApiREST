@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 /**
  * Temperatura
  */
@@ -22,7 +23,9 @@ public class Temperatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int temperaturaId;
     private int anio;
-    private int grado;
+	private int grado = GRADO_MIN;
+	
+	public static final int GRADO_MIN = -1000;
 
     @ManyToOne
     @JoinColumn(name = "pais_id", referencedColumnName = "pais_id")

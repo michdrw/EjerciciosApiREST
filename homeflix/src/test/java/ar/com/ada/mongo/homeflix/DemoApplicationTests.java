@@ -22,22 +22,76 @@ class DemoApplicationTests {
 	void contextLoads() {
 	}
 
+	
+	@Autowired
+	SerieService serieService = new SerieService();
+
 	@Test
 	void verificarSerie() {
-		SerieService service = new SerieService();
 
 		Serie serie = new Serie();
-		
-
-		SerieValidationType validationType = service.verificarSerie(serie);
-		
+		SerieValidationType validationType = serieService.verificarSerie(serie);
 		assertEquals(SerieValidationType.SERIE_DATOS_INVALIDOS, validationType);
+	}
 
+	@Test
+	void verificarSerieDuplicada()
+	{
+		Serie s = new Serie();
+		s.setNombre("Friends");
+		s.setAnio(1994);
+		s.setGenero("Comedia");
+
+		Temporada t = new Temporada();
+		t.setNroTemporada(2);
+		s.getTemporadas().add(t);
+		
+		Episodio e = new Episodio();
+		e.setNroEpisodio(5);
+		e.setTitulo("The One with Five Steaks and an Eggplant");
+		e.setDuracion(25);
+
+		e = new Episodio();
+		e.setNroEpisodio(10);
+		e.setTitulo("The One with Russ");
+		e.setDuracion(26);
+
+		t.getEpisodios().add(e);
+		
+		SerieValidationType validationType = serieService.verificarSerie(s);
+		assertEquals(SerieValidationType.SERIE_DUPLICADA, validationType);
+	}
+
+	@Test
+	void verificarSerieNoDuplicada()
+	{
+		Serie s = new Serie();
+		s.setNombre("Brooklyn 99");
+		s.setAnio(2013);
+		s.setGenero("Comedia");
+
+		Temporada t = new Temporada();
+		t.setNroTemporada(5);
+		s.getTemporadas().add(t);
+		
+		Episodio e = new Episodio();
+		e.setNroEpisodio(4);
+		e.setTitulo("Halloveen");
+		e.setDuracion(22);
+
+		e = new Episodio();
+		e.setNroEpisodio(16);
+		e.setTitulo("NutriBoom");
+		e.setDuracion(22);
+
+		t.getEpisodios().add(e);
+		
+		SerieValidationType validationType = serieService.verificarSerie(s);
+		assertEquals(SerieValidationType.SERIE_OK, validationType);
 	}
 
 	@Test
 	void verificarSerieTempDuplicada() {
-		SerieService service = new SerieService();
 
 		Serie serie = new Serie();
 		serie.setNombre("Breaking Bad");
@@ -64,7 +118,7 @@ class DemoApplicationTests {
 		temporada2.getEpisodios().add(e);
 		
 
-		SerieValidationType serieValidationType = service.verificarSerie(serie);
+		SerieValidationType serieValidationType = serieService.verificarSerie(serie);
 		
 		assertEquals(SerieValidationType.TEMPORADA_DUPLICADA, serieValidationType);
 
@@ -72,6 +126,61 @@ class DemoApplicationTests {
 
 	@Autowired
 	PeliculaService peliculaService = new PeliculaService();
+
+	@Test
+	void verificarPeliculaDatosIncompletos()
+	{
+		Pelicula p = new Pelicula();
+		p.setAnio(2012);
+		p.setGanoOscar(false);
+		p.setGenero("Animada");
+
+		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
+
+		assertEquals(PeliculaValidationType.PELICULA_DATOS_INVALIDOS, validationType);
+	}
+
+	@Test
+	void verificarPeliculaDatosCompletos()
+	{
+		Pelicula p = new Pelicula();
+		p.setNombre("Frankenweenie");
+		p.setAnio(2012);
+		p.setGanoOscar(false);
+		p.setGenero("Animada");
+
+		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
+
+		assertEquals(PeliculaValidationType.PELICULA_OK, validationType);
+	}
+
+	@Test
+	void verificarPeliculaAanioInexistente()
+	{
+		Pelicula p = new Pelicula();
+		p.setNombre("Frankenweenie");
+		p.setAnio(0);
+		p.setGanoOscar(false);
+		p.setGenero("Animada");
+
+		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
+
+		assertEquals(PeliculaValidationType.PELICULA_DATOS_INVALIDOS, validationType);
+	}
+	
+	@Test
+	void verificarPeliculaAanioExistente()
+	{
+		Pelicula p = new Pelicula();
+		p.setNombre("Frankenweenie");
+		p.setAnio(2012);
+		p.setGanoOscar(false);
+		p.setGenero("Animada");
+
+		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
+
+		assertEquals(PeliculaValidationType.PELICULA_OK, validationType);
+	}
 
 	@Test
 	void verificarPeliculaDuplicada()
@@ -103,15 +212,24 @@ class DemoApplicationTests {
 	}
 
 	@Test
-	void modificarPeli()
+	void verificarPeliculaConMismoId()
 	{
-
 		Pelicula p = peliculaService.buscarPorNombre("The Nightmare before Christmas");
 		p.setAnio(1993);
 
 		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
 		assertEquals(PeliculaValidationType.PELICULA_OK, validationType);
-
 	}
+
+	@Test
+	void verificarPeliculaConDistintoId()
+	{
+		Pelicula p = peliculaService.buscarPorNombre("BeetleJuice");
+		p.setNombre("The Nightmare before Christmas");
+
+		PeliculaValidationType validationType = peliculaService.verificarPelicula(p);
+		assertEquals(PeliculaValidationType.PELICULA_DUPLICADA, validationType);
+	}
+
 
 }

@@ -11,5 +11,5 @@ import ar.com.ada.challenge.nasachallenge.entities.Pais;
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Integer> {
 
-    
+    Pais findByName(String nombre);
 }

@@ -47,6 +47,12 @@ public class PaisService {
         return null;
     }
 
+    public Pais buscarPorNombre(String nombre)
+    {
+        Pais p = repoPais.findByName(nombre);
+            return p;
+    }
+
     public Pais buscarPorCodigoPais(int codigoPais)
     {
         for (Pais p : repoPais.findAll()) {
@@ -64,6 +70,48 @@ public class PaisService {
         p.setNombre(nombre);
 
         repoPais.save(p);
+    }
+
+    public enum PaisValidationType 
+    {
+        PAIS_OK, 
+        PAIS_DUPLICADO,
+        PAIS_DATOS_INVALIDOS,
+        TEMPERATURA_VACIA
+    }
+
+    public PaisValidationType verificarPais (Pais pais)
+    {
+        if (pais.getNombre() == null) {
+            return PaisValidationType.PAIS_DATOS_INVALIDOS;
+        }
+        if (pais.getCodigoPais() == 0) {
+            return PaisValidationType.PAIS_DATOS_INVALIDOS;
+        }
+        if (pais.getTemperaturas() == null)
+        {
+            return PaisValidationType.TEMPERATURA_VACIA;
+        }
+        
+        Pais p = buscarPorNombre(pais.getNombre());
+        if (p != null)
+        {
+            if (pais.getPaisId() == 0)
+            {
+                if (pais.getPaisId() == p.getPaisId())
+                {
+                     return PaisValidationType.PAIS_OK;
+                }  
+                else {
+                    return PaisValidationType.PAIS_DUPLICADO;
+                     }
+            }
+            else
+            {
+                return PaisValidationType.PAIS_DUPLICADO;
+            }
+        }
+        return PaisValidationType.PAIS_OK;
     }
 
 }
